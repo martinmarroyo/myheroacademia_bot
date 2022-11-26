@@ -135,4 +135,5 @@ dmypy.json
 
 # Ignore notebooks
 *.ipynb
-#
+# Run scripts
+runbot.bat
