@@ -30,10 +30,13 @@ def send_message(message: str) -> Tuple[Status, Result]:
         return (status, result)
 
 
-def mha_bot(day: str = None) -> Tuple[Status, Result]:
+def mha_bot(sources: Iterable, day: str = None) -> Tuple[Status, Result]:
     """
     An automated process that checks for the next early
-    release of the My Hero Academia manga each Friday
+    release of the My Hero Academia manga each Friday.
+
+    :param sources: A list of URLs to check for the manga panels
+    :param day: The date we want to check the catalogue by in `YYYY-MM-DD` format
     """
     date_ = datetime.strftime(date.today(), '%Y-%m-%d') if day is None else day
     status = False
@@ -44,7 +47,7 @@ def mha_bot(day: str = None) -> Tuple[Status, Result]:
     # Break if we already have the latest issue
     if has_latest: return (status, latest)
     # Otherwise, check websites for latest chapter
-    latest_chapter, url = fm.find_latest_chapter()
+    latest_chapter, url = fm.find_latest_chapter(sources=sources)
     if latest_chapter == latest['latest_issue']:
         # Found latest issue. Send message, update catalog, & return results
         message_status, err = notify_and_update(url, path, catalogue)
@@ -76,5 +79,6 @@ def notify_and_update(url: str, path: Path, catalogue: Iterable[Mapping]) -> Tup
 if __name__ == '__main__':
     args = sys.argv[1:]
     day = args[0] if args else None
-    status, _ = mha_bot(day=day)
+    sources = ['https://w32.readheroacademia.com/', 'https://w1.heroacademiamanga.com/']
+    status, _ = mha_bot(sources=sources, day=day)
     logger.info(f'Do we have the next issue? {"Yes" if status else "No"}')
