@@ -16,7 +16,7 @@ The bot is written in Python. I primarily used `Docker`, `requests`, `BeautifulS
 
 The chart below describes the general flow of execution:
 
-![mhabot - flow of execution](assets\mhabot-flowchart.PNG)
+![mhabot - flow of execution](assets/mhabot-flowchart.PNG)
 
 ## The `MHA-Catalogue` File
 
